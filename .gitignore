@@ -1,3 +1,6 @@
 .venv/*
 __pycache__/*
 vertex/serving/*
+data/latest log.json
+data/train.xlsx
+data/val.xlsx
