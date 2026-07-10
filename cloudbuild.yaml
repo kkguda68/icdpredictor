@@ -1,1 +1,36 @@
-# YAML FILE
+steps:
+  # Step 1: Install dependencies and run data preparation (replaces venv & prepare_data.py)
+  - name: 'python:3.11'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        pip install -r requirements.txt
+        python src/prepare_data.py
+
+  # Step 2: Enable services and ensure Artifact Registry exists
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud services enable aiplatform.googleapis.com artifactregistry.googleapis.com cloudbuild.googleapis.com
+        # Using || true ensures the build doesn't fail if the repository already exists
+        gcloud artifacts repositories create icd-training --repository-format=docker --location=us-central1 || true
+
+  # Step 3: Build the Docker image for Vertex AI
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/icd-training/icdpredictorpubmedbert:latest', 'vertex/']
+
+  # Step 4: Push the Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/icd-training/icdpredictorpubmedbert:latest']
+
+  # Step 5: Submit the Vertex AI Training job
+  - name: 'python:3.11'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        pip install google-cloud-aiplatform
+        python vertex/submit_job.py
