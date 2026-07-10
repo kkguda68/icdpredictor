@@ -1,4 +1,4 @@
-timeout: '432000s'  # Allow up to 5 days for the model to train and deploy
+timeout: '86400s'  # Allow up to 24 hours for the model to train and deploy
 
 steps:
   # Step 1: Install dependencies and run data preparation (replaces venv & prepare_data.py)

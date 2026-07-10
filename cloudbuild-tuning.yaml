@@ -1,4 +1,4 @@
-timeout: '432000s'  # Allow up to 5 days for hyperparameter tuning
+timeout: '86400s'  # Allow up to 24 hours for hyperparameter tuning
 
 steps:
   # Step 1: Install dependencies and run data preparation

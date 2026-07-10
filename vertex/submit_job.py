@@ -68,15 +68,15 @@ MIN_SAMPLES_PER_CLASS = "2"
 # GPU needs quota (IAM & Admin > Quotas > "NVIDIA T4 GPUs"). If your project
 # has no GPU quota you'll get "Accelerators are not supported for this project".
 # Set USE_GPU = False to train on CPU (slower, but no quota needed).
-USE_GPU = False  # flip to True once GPU quota is granted
+USE_GPU = True  # flip to True once GPU quota is granted
 
 if USE_GPU:
-    MACHINE_TYPE = "n1-standard-8"
+    MACHINE_TYPE = "n1-standard-32"
     ACCELERATOR_TYPE = "NVIDIA_TESLA_T4"
-    ACCELERATOR_COUNT = 1
+    ACCELERATOR_COUNT = 4
 else:
     # CPU-only: use a high-memory machine so training doesn't run out of RAM.
-    MACHINE_TYPE = "n1-highmem-8"
+    MACHINE_TYPE = "n1-highmem-16"
     ACCELERATOR_TYPE = None
     ACCELERATOR_COUNT = 0
 
