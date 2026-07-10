@@ -9,7 +9,7 @@ import os
 # ---------------------------------------------------------------------------
 # PATHS
 # ---------------------------------------------------------------------------
-BASE_DIR = "gs://questicdpredictor"
+BASE_DIR = "gs://questdxicdpredictor"
 
 # Use f-strings instead of os.path.join to ensure correct forward slashes for GCS
 DATA_DIR = f"{BASE_DIR}/data"

@@ -32,7 +32,7 @@ from google.cloud import aiplatform
 # ============================ CONFIG ============================
 PROJECT_ID = "qwiklabs-gcp-03-d9bd89368565"
 REGION = "us-central1"
-BUCKET = "questicdpredictor"  # no gs:// prefix
+BUCKET = "questdxicdpredictor"  # no gs:// prefix
 
 IMAGE_URI = f"{REGION}-docker.pkg.dev/{PROJECT_ID}/icd-training/icdpredictorpubmedbert:latest"
 

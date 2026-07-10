@@ -22,7 +22,7 @@ from google.cloud import aiplatform
 # ============================ CONFIG ============================
 PROJECT_ID = "qwiklabs-gcp-03-d9bd89368565"
 REGION = "us-central1"
-BUCKET = "questicdpredictor"  # no gs:// prefix
+BUCKET = "questdxicdpredictor"  # no gs:// prefix
 
 # Where the training job wrote the model (AIP_MODEL_DIR).
 MODEL_ARTIFACT_URI = f"gs://{BUCKET}/output/model"

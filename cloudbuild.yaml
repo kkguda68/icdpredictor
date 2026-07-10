@@ -15,8 +15,12 @@ steps:
       - '-c'
       - |
         gcloud services enable aiplatform.googleapis.com artifactregistry.googleapis.com cloudbuild.googleapis.com
-        # Using || true ensures the build doesn't fail if the repository already exists
-        gcloud artifacts repositories create icd-training --repository-format=docker --location=us-central1 || true
+        if ! gcloud artifacts repositories describe icd-training --location=us-central1 > /dev/null 2>&1; then
+          echo "Creating artifact registry repository 'icd-training'..."
+          gcloud artifacts repositories create icd-training --repository-format=docker --location=us-central1
+        else
+          echo "Repository 'icd-training' already exists, skipping creation."
+        fi
 
   # Step 3: Build the Docker image for Vertex AI
   - name: 'gcr.io/cloud-builders/docker'
