@@ -11,6 +11,7 @@ Run:
 import json
 import os
 import re
+import fsspec
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -41,7 +42,8 @@ def build_input_text(source: str, diagnosis: str) -> str:
 
 
 def main() -> None:
-    os.makedirs(config.DATA_DIR, exist_ok=True)
+    if not config.DATA_DIR.startswith("gs://"):
+        os.makedirs(config.DATA_DIR, exist_ok=True)
 
     print(f"1. Loading training data from:\n   {config.TRAINING_EXCEL}")
     # Note: For .xls files, ensure 'xlrd' is installed. For .xlsx, 'openpyxl'.
@@ -64,10 +66,10 @@ def main() -> None:
     df["diagnosis"] = df["diagnosis"].apply(clean_text)
     df["icd"] = df["icd"].apply(clean_icd)
 
-    # Drop rows with no diagnosis text or no label.
+    # Drop rows with no source text, no diagnosis text or no label.
     before = len(df)
-    df = df[(df["diagnosis"] != "") & (df["icd"] != "")]
-    print(f"2. Dropped {before - len(df):,} rows missing diagnosis or ICD.")
+    df = df[(df["source"] != "") & (df["diagnosis"] != "") & (df["icd"] != "")]
+    print(f"2. Dropped {before - len(df):,} rows missing source, diagnosis, or ICD.")
 
     # Optional: If you strictly want only the 'I' series codes (Circulatory system)
     # df = df[df["icd"].str.startswith("I")]
@@ -102,7 +104,7 @@ def main() -> None:
     id2label = {i: lab for lab, i in label2id.items()}
     df["label"] = df["icd"].map(label2id)
 
-    with open(config.LABEL_MAP_PATH, "w", encoding="utf-8") as fh:
+    with fsspec.open(config.LABEL_MAP_PATH, "w", encoding="utf-8") as fh:
         json.dump({"label2id": label2id, "id2label": id2label}, fh, indent=2)
     print(f"4. Saved label map ({len(labels)} classes) -> {config.LABEL_MAP_PATH}")
 

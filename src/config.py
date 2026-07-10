@@ -9,13 +9,11 @@ import os
 # ---------------------------------------------------------------------------
 # PATHS
 # ---------------------------------------------------------------------------
-# This file lives in .../ICD Intelligence_LLM_Training
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = "gs://questicdpredictor"
 
-# The historical labelled data currently lives in the RAG folder next door.
-# (Source / Diagnosis / ICD  -> 13,499 rows)
-DATA_DIR = os.path.join(BASE_DIR, "data")
-TRAINING_EXCEL = os.path.join(DATA_DIR, "icdsourcedatapq.xlsx")
+# Use f-strings instead of os.path.join to ensure correct forward slashes for GCS
+DATA_DIR = f"{BASE_DIR}/data"
+TRAINING_EXCEL = f"{DATA_DIR}/icdsourcedatapq.xlsx"
 TRAINING_SHEET = "Sheet1"
 
 # Column names inside the training Excel (note the original typo "Diagnosis").
@@ -25,10 +23,10 @@ COL_ICD = "ICD"
 
 # Where prepared splits + the trained model + label maps are written.
 
-MODEL_DIR = os.path.join(BASE_DIR, "model")
-LABEL_MAP_PATH = os.path.join(DATA_DIR, "label_map.json")
-TRAIN_XLSX = os.path.join(DATA_DIR, "train.xlsx")
-VAL_XLSX = os.path.join(DATA_DIR, "val.xlsx")
+MODEL_DIR = f"{BASE_DIR}/model"
+LABEL_MAP_PATH = f"{DATA_DIR}/label_map.json"
+TRAIN_XLSX = f"{DATA_DIR}/train.xlsx"
+VAL_XLSX = f"{DATA_DIR}/val.xlsx"
 
 # ---------------------------------------------------------------------------
 # MODEL

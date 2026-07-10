@@ -30,11 +30,11 @@ gs://YOUR_BUCKET/icd/output/<job>/model/ via the AIP_MODEL_DIR env var.
 from google.cloud import aiplatform
 
 # ============================ CONFIG ============================
-PROJECT_ID = "qwiklabs-gcp-01-573a52336a38"
+PROJECT_ID = "qwiklabs-gcp-03-d9bd89368565"
 REGION = "us-central1"
-BUCKET = "icdpredictor123"  # no gs:// prefix
+BUCKET = "questicdpredictor"  # no gs:// prefix
 
-IMAGE_URI = f"{REGION}-docker.pkg.dev/{PROJECT_ID}/icd-training/pubmedbert:latest"
+IMAGE_URI = f"{REGION}-docker.pkg.dev/{PROJECT_ID}/icd-training/icdpredictorpubmedbert:latest"
 
 GCS_PREFIX = f"gs://{BUCKET}"
 BASE_OUTPUT_DIR = f"{GCS_PREFIX}/output"  # AIP_MODEL_DIR -> <this>/model/
@@ -47,12 +47,12 @@ BASE_OUTPUT_DIR = f"{GCS_PREFIX}/output"  # AIP_MODEL_DIR -> <this>/model/
 DATA_MODE = "prepared"
 
 # prepared mode paths (upload prepare_data.py's outputs here):
-TRAIN_PATH = f"{GCS_PREFIX}/train.xlsx"
-VAL_PATH = f"{GCS_PREFIX}/val.xlsx"
-LABEL_MAP_PATH = f"{GCS_PREFIX}/label_map.json"
+TRAIN_PATH = f"{GCS_PREFIX}/data/train.xlsx"
+VAL_PATH = f"{GCS_PREFIX}/data/val.xlsx"
+LABEL_MAP_PATH = f"{GCS_PREFIX}/data/label_map.json"
 
 # spreadsheet mode: RAW workbook + its schema
-EXCEL_PATH = f"{GCS_PREFIX}/raw/ICDDATA21_Venu_compare.xlsx"
+EXCEL_PATH = f"{GCS_PREFIX}/data/icdsourcedatapq.xlsx"
 # Where the job saves the generated train/val/label_map (for audit/reuse).
 PREPARED_DATA_DIR = f"{GCS_PREFIX}/prepared"
 SHEET_NAME = "Sheet1"

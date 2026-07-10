@@ -178,8 +178,8 @@ def prepare_from_excel(args):
     df["icd"] = df["icd"].apply(clean_icd)
 
     before = len(df)
-    df = df[(df["diagnosis"] != "") & (df["icd"] != "")]
-    print(f"  Dropped {before - len(df):,} rows missing diagnosis or ICD.", flush=True)
+    df = df[(df["source"] != "") & (df["diagnosis"] != "") & (df["icd"] != "")]
+    print(f"  Dropped {before - len(df):,} rows missing source, diagnosis, or ICD.", flush=True)
 
     if args.drop_duplicates:
         df = df.drop_duplicates(subset=["source", "diagnosis", "icd"])
