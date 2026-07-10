@@ -34,9 +34,9 @@ SERVE_IMAGE_URI = (
 )
 
 # Serving compute. Use a GPU for latency, or drop the accelerator for cost.
-MACHINE_TYPE = "n1-standard-4"
-ACCELERATOR_TYPE = "NVIDIA_TESLA_T4"
-ACCELERATOR_COUNT = 1
+MACHINE_TYPE = "n1-highmem-4"
+ACCELERATOR_TYPE = None
+ACCELERATOR_COUNT = 0
 MIN_REPLICAS = 1
 MAX_REPLICAS = 1
 # ================================================================
