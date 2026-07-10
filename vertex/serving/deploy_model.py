@@ -17,18 +17,20 @@ Prerequisites (run once, from the vertex/serving/ folder):
 After deployment, call the endpoint with:
     {"instances": [{"source": "SKIN", "diagnosis": "basal cell carcinoma"}]}
 """
+import os
 from google.cloud import aiplatform
 
 # ============================ CONFIG ============================
 PROJECT_ID = "qwiklabs-gcp-03-d9bd89368565"
 REGION = "us-central1"
 BUCKET = "questdxicdpredictor"  # no gs:// prefix
+IMAGE_TAG = os.environ.get("IMAGE_TAG", "latest")
 
 # Where the training job wrote the model (AIP_MODEL_DIR).
 MODEL_ARTIFACT_URI = f"gs://{BUCKET}/output/model"
 
 SERVE_IMAGE_URI = (
-    f"{REGION}-docker.pkg.dev/{PROJECT_ID}/icd-training/pubmedbert-serve:latest"
+    f"{REGION}-docker.pkg.dev/{PROJECT_ID}/icd-training/pubmedbert-serve:{IMAGE_TAG}"
 )
 
 # Serving compute. Use a GPU for latency, or drop the accelerator for cost.

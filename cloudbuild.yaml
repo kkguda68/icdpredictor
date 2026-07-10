@@ -24,15 +24,17 @@ steps:
 
   # Step 3: Build the Docker image for Vertex AI
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/icd-training/icdpredictorpubmedbert:latest', 'vertex/']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/icd-training/icdpredictorpubmedbert:$BUILD_ID', 'vertex/']
 
   # Step 4: Push the Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/icd-training/icdpredictorpubmedbert:latest']
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/icd-training/icdpredictorpubmedbert:$BUILD_ID']
 
   # Step 5: Submit the Vertex AI Training job
   - name: 'python:3.11'
     entrypoint: 'bash'
+    env:
+      - 'IMAGE_TAG=$BUILD_ID'
     args:
       - '-c'
       - |
@@ -41,13 +43,15 @@ steps:
 
   # Step 6: Build and push the Serving Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/icd-training/pubmedbert-serve:latest', 'vertex/serving/']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/icd-training/pubmedbert-serve:$BUILD_ID', 'vertex/serving/']
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/icd-training/pubmedbert-serve:latest']
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/icd-training/pubmedbert-serve:$BUILD_ID']
 
   # Step 7: Register to Model Registry and Deploy Endpoint
   - name: 'python:3.11'
     entrypoint: 'bash'
+    env:
+      - 'IMAGE_TAG=$BUILD_ID'
     args:
       - '-c'
       - |

@@ -6,6 +6,7 @@ This script defines a search space for parameters like learning rate and
 number of epochs. Vertex AI will run multiple training trials and find the
 combination that results in the best validation accuracy.
 """
+import os
 from google.cloud import aiplatform
 from google.cloud.aiplatform.hyperparameter_tuning import (
     HyperparameterTuningJob,
@@ -18,8 +19,9 @@ from google.cloud.aiplatform.hyperparameter_tuning import (
 PROJECT_ID = "qwiklabs-gcp-03-d9bd89368565"
 REGION = "us-central1"
 BUCKET = "questdxicdpredictor"  # no gs:// prefix
+IMAGE_TAG = os.environ.get("IMAGE_TAG", "latest")
 
-IMAGE_URI = f"{REGION}-docker.pkg.dev/{PROJECT_ID}/icd-training/icdpredictorpubmedbert:latest"
+IMAGE_URI = f"{REGION}-docker.pkg.dev/{PROJECT_ID}/icd-training/icdpredictorpubmedbert:{IMAGE_TAG}"
 
 GCS_PREFIX = f"gs://{BUCKET}"
 BASE_OUTPUT_DIR = f"{GCS_PREFIX}/hpt_output"

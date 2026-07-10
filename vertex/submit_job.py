@@ -27,14 +27,16 @@ Prerequisites (run once, from this vertex/ folder):
 The trained model (model.safetensors, tokenizer, label_map.json) is written to
 gs://YOUR_BUCKET/icd/output/<job>/model/ via the AIP_MODEL_DIR env var.
 """
+import os
 from google.cloud import aiplatform
 
 # ============================ CONFIG ============================
 PROJECT_ID = "qwiklabs-gcp-03-d9bd89368565"
 REGION = "us-central1"
 BUCKET = "questdxicdpredictor"  # no gs:// prefix
+IMAGE_TAG = os.environ.get("IMAGE_TAG", "latest")
 
-IMAGE_URI = f"{REGION}-docker.pkg.dev/{PROJECT_ID}/icd-training/icdpredictorpubmedbert:latest"
+IMAGE_URI = f"{REGION}-docker.pkg.dev/{PROJECT_ID}/icd-training/icdpredictorpubmedbert:{IMAGE_TAG}"
 
 GCS_PREFIX = f"gs://{BUCKET}"
 BASE_OUTPUT_DIR = f"{GCS_PREFIX}/output"  # AIP_MODEL_DIR -> <this>/model/
