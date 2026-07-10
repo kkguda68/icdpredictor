@@ -35,5 +35,20 @@ steps:
         pip install google-cloud-aiplatform
         python vertex/submit_job.py
 
+  # Step 6: Build and push the Serving Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/icd-training/pubmedbert-serve:latest', 'vertex/serving/']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/icd-training/pubmedbert-serve:latest']
+
+  # Step 7: Register to Model Registry and Deploy Endpoint
+  - name: 'python:3.11'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        pip install google-cloud-aiplatform
+        python vertex/serving/deploy_model.py
+
 options:
   logging: CLOUD_LOGGING_ONLY
