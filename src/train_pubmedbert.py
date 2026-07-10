@@ -31,8 +31,8 @@ import config
 
 
 def load_splits():
-    train_df = pd.read_csv(config.TRAIN_CSV)
-    val_df = pd.read_csv(config.VAL_CSV)
+    train_df = pd.read_excel(config.TRAIN_XLSX)
+    val_df = pd.read_excel(config.VAL_XLSX)
     return train_df, val_df
 
 
@@ -82,7 +82,7 @@ def build_training_args(num_epochs: int) -> TrainingArguments:
 
 
 def main(smoke: bool = False) -> None:
-    if not (os.path.exists(config.TRAIN_CSV) and os.path.exists(config.VAL_CSV)):
+    if not (os.path.exists(config.TRAIN_XLSX) and os.path.exists(config.VAL_XLSX)):
         raise FileNotFoundError(
             "Prepared splits not found. Run `python prepare_data.py` first."
         )
