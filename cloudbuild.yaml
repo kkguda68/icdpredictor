@@ -34,3 +34,6 @@ steps:
       - |
         pip install google-cloud-aiplatform
         python vertex/submit_job.py
+
+options:
+  logging: CLOUD_LOGGING_ONLY
